@@ -1,106 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote of the Day</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            background-color: #e9ecef;
-            color: #495057;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            overflow: hidden; /* Prevent overall page scroll */
-        }
-
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            width: 80%; /* Adjust as needed */
-            max-width: 600px; /* Adjust as needed */
-            position: relative; /* For absolute positioning of quote-items */
-            height: auto; /* Adjust based on content, will be dynamic */
-            overflow: hidden; /* Hide quotes outside the container */
-        }
-
-        h1 {
-            margin-top: 0;
-            font-size: 2.2em;
-            color: #007bff;
-            margin-bottom: 20px;
-        }
-
-        .quote-wrapper {
-            position: relative; /* Needed for JavaScript-based transitions */
-            width: 100%;
-            height: auto; /* Adjust dynamically based on quote */
-        }
-
-        .quote-item {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            opacity: 0;
-            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
-            padding: 15px 0; /* Add some vertical padding */
-        }
-
-        .quote-item.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .quote-item.prev {
-            transform: translateY(-20px);
-        }
-
-        .quote-item.next {
-            transform: translateY(20px);
-        }
-
-        #quote {
-            font-size: 1.3em;
-            font-style: italic;
-            color: #6c757d;
-            margin-bottom: 5px;
-        }
-
-        .author {
-            font-size: 0.9em;
-            color: #6c757d;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Quote of the Day</h1>
-        <div class="quote-wrapper">
-            <div class="quote-item active">
-                <p id="quote"></p>
-                <p class="author"></p>
-            </div>
-            <div class="quote-item">
-                <p id="quote"></p>
-                <p class="author"></p>
-            </div>
-            <div class="quote-item">
-                <p id="quote"></p>
-                <p class="author"></p>
-            </div>
-        </div>
-    </div>
-
-    <script>
+<script>
         const quotes = [
             { text: "The best way to predict the future is to create it.", author: "Abraham Lincoln" },
             { text: "Success is not the key to happiness. Happiness is the key to success.", author: "Albert Schweitzer" },
@@ -122,10 +20,11 @@
                 } else {
                     item.classList.add('next');
                 }
+                // Correctly select elements within the current quote-item
                 const p = item.querySelector('#quote');
                 const author = item.querySelector('.author');
-                p.innerText = quotes[i].text;
-                author.innerText = `- ${quotes[i].author}`;
+                if (p) p.innerText = quotes[i].text;
+                if (author) author.innerText = `- ${quotes[i].author}`;
             });
 
             // Adjust wrapper height to the active quote's height (optional, for smoother transitions)
@@ -143,5 +42,3 @@
         // Set interval for automatic scrolling
         setInterval(nextQuote, 3000); // Change quote every 3 seconds
     </script>
-</body>
-</html>
