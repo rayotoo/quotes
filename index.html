@@ -6,39 +6,64 @@
     <title>Quote of the Day</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* More modern font */
             text-align: center;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: #e9ecef; /* Light gray background */
+            color: #495057; /* Darker gray text */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh; /* Center content vertically */
+        }
+
+        .container {
+            background-color: #fff; /* White container */
+            padding: 30px;
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         }
 
         h1 {
-            margin-top: 50px;
-            font-size: 2.5em;
+            margin-top: 0; /* Adjust top margin */
+            font-size: 2.2em; /* Slightly smaller, cleaner */
+            color: #007bff; /* Primary blue color */
+            margin-bottom: 20px; /* More space below heading */
         }
 
         #quote {
-            margin-top: 20px;
-            font-size: 1.5em;
+            font-size: 1.3em; /* Slightly smaller quote text */
             font-style: italic;
+            color: #6c757d; /* Secondary gray color */
+            margin-bottom: 15px; /* Add some space below the quote */
+        }
+
+        .author {
+            font-size: 0.9em;
+            color: #6c757d;
         }
     </style>
 </head>
 <body>
-    <h1>Quote of the Day</h1>
-    <p id="quote"></p>
+    <div class="container">
+        <h1>Quote of the Day</h1>
+        <p id="quote"></p>
+        <p class="author" id="author"></p>
+    </div>
 
     <script>
         const quotes = [
-            "The best way to predict the future is to create it. - Abraham Lincoln",
-            "Success is not the key to happiness. Happiness is the key to success. - Albert Schweitzer",
-            "Do not wait for leaders; do it alone, person to person. - Mother Teresa"
+            { text: "The best way to predict the future is to create it.", author: "Abraham Lincoln" },
+            { text: "Success is not the key to happiness. Happiness is the key to success.", author: "Albert Schweitzer" },
+            { text: "Do not wait for leaders; do it alone, person to person.", author: "Mother Teresa" }
         ];
-        
+
         // Display a random quote
-        document.getElementById("quote").innerText = quotes[Math.floor(Math.random() * quotes.length)];
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        document.getElementById("quote").innerText = quotes[randomIndex].text;
+        document.getElementById("author").innerText = "- " + quotes[randomIndex].author;
     </script>
 </body>
 </html>
