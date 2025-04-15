@@ -6,51 +6,101 @@
     <title>Quote of the Day</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* More modern font */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
             margin: 0;
             padding: 0;
-            background-color: #e9ecef; /* Light gray background */
-            color: #495057; /* Darker gray text */
+            background-color: #e9ecef;
+            color: #495057;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh; /* Center content vertically */
+            min-height: 100vh;
+            overflow: hidden; /* Prevent overall page scroll */
         }
 
         .container {
-            background-color: #fff; /* White container */
+            background-color: #fff;
             padding: 30px;
-            border-radius: 8px; /* Rounded corners */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 80%; /* Adjust as needed */
+            max-width: 600px; /* Adjust as needed */
+            position: relative; /* For absolute positioning of quotes */
+            height: 100px; /* Adjust based on quote height */
+            overflow: hidden; /* Hide quotes outside the container */
         }
 
         h1 {
-            margin-top: 0; /* Adjust top margin */
-            font-size: 2.2em; /* Slightly smaller, cleaner */
-            color: #007bff; /* Primary blue color */
-            margin-bottom: 20px; /* More space below heading */
+            margin-top: 0;
+            font-size: 2.2em;
+            color: #007bff;
+            margin-bottom: 20px;
         }
 
-        #quote {
-            font-size: 1.3em; /* Slightly smaller quote text */
+        .quote-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .quote-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3em;
             font-style: italic;
-            color: #6c757d; /* Secondary gray color */
-            margin-bottom: 15px; /* Add some space below the quote */
+            color: #6c757d;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+        }
+
+        .quote-item.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .quote-item.prev {
+            transform: translateY(-20px); /* Adjust for desired slide distance */
+        }
+
+        .quote-item.next {
+            transform: translateY(20px); /* Adjust for desired slide distance */
         }
 
         .author {
             font-size: 0.9em;
             color: #6c757d;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Quote of the Day</h1>
-        <p id="quote"></p>
-        <p class="author" id="author"></p>
+        <div class="quote-wrapper">
+            <div class="quote-item active">
+                <p id="quote1"></p>
+                <p class="author" id="author1"></p>
+            </div>
+            <div class="quote-item">
+                <p id="quote2"></p>
+                <p class="author" id="author2"></p>
+            </div>
+            <div class="quote-item">
+                <p id="quote3"></p>
+                <p class="author" id="author3"></p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -60,10 +110,34 @@
             { text: "Do not wait for leaders; do it alone, person to person.", author: "Mother Teresa" }
         ];
 
-        // Display a random quote
-        const randomIndex = Math.floor(Math.random() * quotes.length);
-        document.getElementById("quote").innerText = quotes[randomIndex].text;
-        document.getElementById("author").innerText = "- " + quotes[randomIndex].author;
+        const quoteItems = document.querySelectorAll('.quote-item');
+        let currentIndex = 0;
+
+        function showQuote(index) {
+            quoteItems.forEach((item, i) => {
+                item.classList.remove('active', 'prev', 'next');
+                if (i === index) {
+                    item.classList.add('active');
+                } else if (i === (index - 1 + quotes.length) % quotes.length) {
+                    item.classList.add('prev');
+                } else {
+                    item.classList.add('next');
+                }
+                item.querySelector('p').innerText = quotes[i].text;
+                item.querySelector('.author').innerText = `- ${quotes[i].author}`;
+            });
+        }
+
+        function nextQuote() {
+            currentIndex = (currentIndex + 1) % quotes.length;
+            showQuote(currentIndex);
+        }
+
+        // Show initial quote
+        showQuote(currentIndex);
+
+        // Set interval for automatic scrolling (adjust the time as needed)
+        setInterval(nextQuote, 5000); // Change quote every 5 seconds
     </script>
 </body>
 </html>
