@@ -1,0 +1,54 @@
+name: Update Quote Hourly
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Runs at the beginning of every hour
+
+jobs:
+  update-quote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+
+      - name: Generate and Replace Quote
+        run: |
+          const quotes = [
+            { text: "The best way to predict the future is to create it.", author: "Abraham Lincoln" },
+            { text: "Success is not the key to happiness. Happiness is the key to success.", author: "Albert Schweitzer" },
+            { text: "Do not wait for leaders; do it alone, person to person.", author: "Mother Teresa" },
+            { text: "Strive not to be a success, but rather to be of value.", author: "Albert Einstein" },
+            { text: "The mind is everything. What you think you become.", author: "Buddha" },
+            { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+            { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+            { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+            { text: "It is never too late to be what you might have been.", author: "George Eliot" },
+            { text: "The journey of a thousand miles begins with a single step.", author: "Lao Tzu" },
+            // Add ALL your quotes here!
+          ];
+
+          function getRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            return quotes[randomIndex];
+          }
+
+          const newQuote = getRandomQuote();
+          const quoteLine = `        document.getElementById("quote").innerText = "${newQuote.text}";`;
+          const authorLine = `        document.getElementById("author").innerText = "- ${newQuote.author}";`;
+
+          const indexHTML = await require('fs/promises').readFile('./index.html', 'utf8');
+          const updatedHTML = indexHTML.replace(/document\.getElementById\("quote"\)\.innerText = ".*";/, quoteLine)
+                                     .replace(/document\.getElementById\("author"\)\.innerText = "- .*";/, authorLine);
+
+          await require('fs/promises').writeFile('./index.html', updatedHTML, 'utf8');
+
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update quote of the hour"
+          push_options: '--force' # Be cautious with --force, consider removing if not needed
