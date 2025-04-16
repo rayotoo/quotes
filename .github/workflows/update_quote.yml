@@ -2,7 +2,7 @@ name: Update Quote Every 20 Minutes
 
 on:
   schedule:
-    - cron: '*/20 * * * *' # Runs at the beginning of every hour
+    - cron: '*/20 * * * *' # Runs every 20 minutes
 
 jobs:
   update-quote:
@@ -18,6 +18,9 @@ jobs:
 
       - name: Generate and Replace Quote
         run: |
+          node <<EOF
+          const fs = require('fs').promises;
+
           const quotes = [
             { text: "The best way to predict the future is to create it.", author: "Abraham Lincoln" },
             { text: "Success is not the key to happiness. Happiness is the key to success.", author: "Albert Schweitzer" },
@@ -61,94 +64,6 @@ jobs:
             { text: "If you are working on something that you really care about, you don't have to be pushed. The vision pulls you.", author: "Steve Jobs" },
             { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
             { text: "Dream big and dare to fail.", author: "Norman Vaughan" },
-            { text: "Our greatest weakness lies in giving up. The most certain way to succeed is always to try just one more time.", author: "Thomas Edison" },
-            { text: "The difference between ordinary and extraordinary is that little extra.", author: "Jimmy Johnson" },
-            { text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" },
-            { text: "Start where you are. Use what you have. Do what you can.", author: "Arthur Ashe" },
-            { text: "Challenges are what make life interesting and overcoming them is what makes life meaningful.", author: "Joshua Marine" },
-            { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
-            { text: "The future rewards those who press on. I don't have time to feel sorry for myself. I don't have time to complain. I'm going to press on.", author: "Barack Obama" },
-            { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
-            { text: "The only place where success comes before work is in the dictionary.", author: "Vidal Sassoon" },
-            { text: "Keep your eyes on the stars, and your feet on the ground.", author: "Theodore Roosevelt" },
-            { text: "When you have a dream, you've got to grab it and never let go.", author: "Carol Burnett" },
-            { text: "Success isn't about how much money you make; it's about the difference you make in people's lives.", author: "Michelle Obama" },
-            { text: "I've missed more than 9000 shots in my career. I've lost almost 300 games. Twenty-six times, I've been trusted to take the game-winning shot and missed. I've failed over and over and over again in my life. And that is why I succeed.", author: "Michael Jordan" },
-            { text: "The mind is like water. When it's turbulent, it's difficult to see. When it's calm, everything becomes clear.", author: "Prasad Nirodha" },
-            { text: "Do what you feel in your heart to be right – for you’ll be criticized anyway.", author: "Eleanor Roosevelt" },
-            { text: "The only person you are destined to become is the person you decide to be.", author: "Ralph Waldo Emerson" },
-            { text: "Go confidently in the direction of your dreams. Live the life you've imagined.", author: "Henry David Thoreau" },
-            { text: "Believe in yourself. You are braver than you think, more talented than you know, and capable of more than you imagine.", author: "Roy T. Bennett" },
-            { text: "The power of imagination makes us infinite.", author: "John Muir" },
-            { text: "What you do today can improve all your tomorrows.", author: "Ralph Marston" },
-            { text: "Every strike brings me closer to the next home run.", author: "Babe Ruth" },
-            { text: "The best revenge is massive success.", author: "Frank Sinatra" },
-            { text: "If you can dream it, you can do it.", author: "Walt Disney" },
-            { text: "The biggest risk is not taking any risk... In a world that's changing really quickly, the only strategy that is guaranteed to fail is not taking risks.", author: "Mark Zuckerberg" },
-            { text: "Don't be afraid to give up the good to go for the great.", author: "John D. Rockefeller" },
-            { text: "If you are not willing to risk the usual, you will have to settle for the ordinary.", author: "Jim Rohn" },
-            { text: "The future belongs to those who learn more skills and combine them in creative ways.", author: "Robert Greene" },
-            { text: "You are never too old to set another goal or to dream a new dream.", author: "C.S. Lewis" },
-            { text: "The most difficult thing is the decision to act, the rest is merely tenacity.", author: "Amelia Earhart" },
-            { text: "I didn't get there by wishing for it or hoping for it, but by working for it.", author: "Estée Lauder" },
-            { text: "The key is not to prioritize what's on your schedule, but to schedule your priorities.", author: "Stephen Covey" },
-            { text: "Your time is limited, don't waste it living someone else's life.", author: "Steve Jobs" },
-            { text: "The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack of will.", author: "Vince Lombardi" },
-            { text: "Great things are done by a series of small things brought together.", author: "Vincent van Gogh" },
-            { text: "Develop success from failures. Discouragement and failure are two of the surest stepping stones to success.", author: "Dale Carnegie" },
-            { text: "Nothing is impossible, the word itself says 'I'm possible'!", author: "Audrey Hepburn" },
-            { text: "The only way to discover the limits of the possible is to go beyond them into the impossible.", author: "Arthur C. Clarke" },
-            { text: "If your dreams don't scare you, they are too small.", author: "Richard Branson" },
-            { text: "The starting point of all achievement is desire.", author: "Napoleon Hill" },
-            { text: "Opportunity does not knock, it presents itself when you beat down the door.", author: "Kyle Chandler" },
-            { text: "Build your own dreams, or someone else will hire you to build theirs.", author: "Farraj Gray" },
-            { text: "The secret to success is to know something nobody else knows.", author: "Aristotle Onassis" },
-            { text: "I find that the harder I work, the more luck I seem to have.", author: "Thomas Jefferson" },
-            { text: "When one door of happiness closes, another opens; but often we look so long at the closed door that we do not see the one which has been opened for us.", author: "Helen Keller" },
-            { text: "The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart.", author: "Helen Keller" },
-            { text: "Love is not about how many days, weeks, or months you've been together, it's all about how much you love each other every single day.", author: "Unknown" },
-            { text: "Where there is love there is life.", author: "Mahatma Gandhi" },
-            { text: "The greatest happiness you can have is knowing that you do not necessarily require happiness.", author: "William Saroyan" },
-            { text: "We are shaped and fashioned by what we love.", author: "Johann Wolfgang von Goethe" },
-            { text: "The best proof of love is trust.", author: "Joyce Brothers" },
-            { text: "Love is when the other person's happiness is more important than your own.", author: "H. Jackson Brown Jr." },
-            { text: "The most important thing in life is to learn how to give out love, and to let it come in.", author: "Morrie Schwartz" },
-            { text: "A life lived in love will never be dull.", author: "Leo Buscaglia" },
-            { text: "The only way to have a friend is to be one.", author: "Ralph Waldo Emerson" },
-            { text: "The best mirror is an old friend.", author: "George Herbert" },
-            { text: "Friends show their love in times of trouble, not in happiness.", author: "Euripides" },
-            { text: "A single rose can be my garden... a single friend, my world.", author: "Leo Buscaglia" },
-            { text: "The language of friendship is not words but meanings.", author: "Henry David Thoreau" },
-            { text: "The heart has its reasons which reason knows nothing of.", author: "Blaise Pascal" },
-            { text: "To love and be loved is to feel the sun from both sides.", author: "David Viscott" },
-            { text: "The best love is the kind that awakens the soul; that makes us reach for more, that plants the fire in our hearts and brings peace to our minds.", author: "Nicholas Sparks" },
-            { text: "You don't love someone for their looks, or their clothes, or for their fancy car, but because they sing a song only you can hear.", author: "Oscar Wilde" },
-            { text: "Gravitation is not responsible for people falling in love.", author: "Albert Einstein" },
-            { text: "The greatest thing you'll ever learn is just to love and be loved in return.", author: "Eden Ahbez" },
-            { text: "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful.", author: "Albert Schweitzer" },
-            { text: "Success usually comes to those who are too busy to be looking for it.", author: "Henry David Thoreau" },
-            { text: "The road to success and the road to failure are almost exactly the same.", author: "Colin R. Davis" },
-            { text: "Success is the sum of small efforts, repeated day in and day out.", author: "Robert Collier" },
-            { text: "The ladder of success is never crowded at the top.", author: "Napoleon Hill" },
-            { text: "Eighty percent of success is showing up.", author: "Woody Allen" },
-            { text: "The distance between dreams and reality is called action.", author: "Unknown" },
-            { text: "The secret of success is constancy to purpose.", author: "Benjamin Disraeli" },
-            { text: "Action is the foundational key to all success.", author: "Pablo Picasso" },
-            { text: "Don't aim for success if you want it; just do what you love and believe in, and it will come naturally.", author: "David Frost" },
-            { text: "There are no secrets to success. It is the result of preparation, hard work, and learning from failure.", author: "Colin Powell" },
-            { text: "The price of success is hard work, dedication to the job at hand, and the determination that whether we win or lose, we have applied the best of ourselves to the task at hand.", author: "Vince Lombardi" },
-            { text: "I attribute my success to this: I never gave or took any excuse.", author: "Florence Nightingale" },
-            { text: "Success is not how high you have climbed, but how you make a positive difference to the world.", author: "Roy T. Bennett" },
-            { text: "The biggest adventure you can take is to live the life of your dreams.", author: "Oprah Winfrey" },
-            { text: "Real success is finding your lifework in the work that you love.", author: "David McCullough" },
-            { text: "The key to success is to focus energy, mind and power single-mindedly upon the job at hand.", author: "William James" },
-            { text: "Success is often achieved by those who don't know that failure is inevitable.", author: "Coco Chanel" },
-            { text: "The greatest discovery of my generation is that a human being can alter his life by altering his attitudes.", author: "William James" },
-            { text: "Keep your face to the sunshine and you cannot see a shadow.", author: "Helen Keller" },
-            { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
-            { text: "What lies behind us and what lies before us are tiny matters compared to what lies within us.", author: "Ralph Waldo Emerson" },
-            { text: "May your choices reflect your hopes, not your fears.", author: "Nelson Mandela" },
-            // Add ALL your quotes here!
           ];
 
           function getRandomQuote() {
@@ -156,18 +71,27 @@ jobs:
             return quotes[randomIndex];
           }
 
-          const newQuote = getRandomQuote();
-          const quoteLine = `        document.getElementById("quote").innerText = "${newQuote.text}";`;
-          const authorLine = `        document.getElementById("author").innerText = "- ${newQuote.author}";`;
+          async function main() {
+            const newQuote = getRandomQuote();
+            const quoteLine = `          document.getElementById("quote").innerText = "${newQuote.text}";`;
+            const authorLine = `          document.getElementById("author").innerText = "- ${newQuote.author}";`;
 
-          const indexHTML = await require('fs/promises').readFile('./index.html', 'utf8');
-          const updatedHTML = indexHTML.replace(/document\.getElementById\("quote"\)\.innerText = ".*";/, quoteLine)
-                                     .replace(/document\.getElementById\("author"\)\.innerText = "- .*";/, authorLine);
+            try {
+              let indexHTML = await fs.readFile('./index.html', 'utf8');
+              const updatedHTML = indexHTML.replace(/document\.getElementById\("quote"\)\.innerText = ".*";/, quoteLine)
+                                            .replace(/document\.getElementById\("author"\)\.innerText = "- .*";/, authorLine);
 
-          await require('fs/promises').writeFile('./index.html', updatedHTML, 'utf8');
+              await fs.writeFile('./index.html', updatedHTML, 'utf8');
+            } catch (error) {
+              console.error("Error reading or writing index.html:", error);
+            }
+          }
+
+          main().catch(err => console.error("Unhandled error:", err));
+          EOF
 
       - name: Commit and Push Changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Update quote of the hour"
+          commit_message: "Update quote"
           push_options: '--force' # Be cautious with --force, consider removing if not needed
